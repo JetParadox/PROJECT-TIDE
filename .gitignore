@@ -1,0 +1,14 @@
+# Visual Studio, IDE caches
+.vs/
+*.ipch
+*.pch
+
+# Unreal/UE build and intermediate files
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+*.xcuserdata
+*.suo
+*.user
+*.userosscache
