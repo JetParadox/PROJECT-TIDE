@@ -5,17 +5,20 @@
 			"guid": "00000000000000000000000000000000",
 			"description": "Default Uncontrolled Changelist",
 			"files": [
-				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/TestMap.umap",
-				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Testing/TestMap.umap",
 				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/CharacterTestMap.umap",
 				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/MainLevel.umap",
-				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/SeaTest.umap",
-				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/TimerTest.umap",
-				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/GeneralTest.umap",
 				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/CustomerTestMap.umap",
 				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/TimerTestMap.umap",
 				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/SeaTestMap.umap",
 				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/GeneralTestMap.umap",
+				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Inputs/IMC_DefaultMappings.uasset",
+				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Blueprints/Character/BP_Player.uasset",
+				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Blueprints/BP_Main_GameMode.uasset",
+				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/TestMap.umap",
+				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Testing/TestMap.umap",
+				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/SeaTest.umap",
+				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/TimerTest.umap",
+				"D:/Kingston/Unreal Engine Projects/PROJECT-TIDE/Content/Levels/Testing/GeneralTest.umap",
 				"C:/Users/njet9/Documents/Unreal Projects/PROJECT_TIDE/Content/Testing/TestMap.umap"
 			]
 		}
