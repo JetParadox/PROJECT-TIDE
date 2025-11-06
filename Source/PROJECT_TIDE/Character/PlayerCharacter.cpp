@@ -3,64 +3,78 @@
 
 #include "PlayerCharacter.h"
 
-#include "Components/CapsuleComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
-// Sets default values
 APlayerCharacter::APlayerCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-	//Setting Up the Hierarchy for the Character
-	CapsuleComp = ACharacter::GetCapsuleComponent();
-	SetRootComponent(CapsuleComp);
-
-	//Player Mesh Initialization
-	PlayerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Player Mesh"));
-	PlayerMesh->SetupAttachment(CapsuleComp);
-
-	//Camera Components Initialization
+	//Setting Up Camera
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Component"));
 	SpringArmComp->SetupAttachment(CapsuleComp);
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera Component"));
 	CameraComp->SetupAttachment(SpringArmComp);
-
 }
 
-// Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//PlayerController Setup for getting Inputs from Input Mapping Context (IMC)
-	APlayerController* PlayerController = Cast<APlayerController>(Controller);
-	if (PlayerController)
+	//Setting Up Connection Between Player Controller and Mappings
+	if (APlayerController* playerController = Cast<APlayerController>(Controller))
 	{
-		ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer();
-		if (LocalPlayer)
+		if (ULocalPlayer* localPlayer = Cast<ULocalPlayer>(playerController->GetLocalPlayer()))
 		{
-			UEnhancedInputLocalPlayerSubsystem* Subsystem;
-			Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
-			if (Subsystem)
+			if (UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(localPlayer))
 			{
-				Subsystem->AddMappingContext(DefaultMappingContext,0);
-				UE_LOG(LogTemp, Display, TEXT("Input Mappings Added to Local Player Sub System"))
+				subsystem->AddMappingContext(DefaultMappingContext, 0);
 			}
 		}
 	}
 }
 
-// Called every frame
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	
 }
 
-// Called to bind functionality to input
-void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* playerInputComponent)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	Super::SetupPlayerInputComponent(playerInputComponent);
 
+	if (UEnhancedInputComponent* enhancedInputComponent = Cast<UEnhancedInputComponent>(playerInputComponent))
+	{
+		// //Move Action
+		enhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::DoMoveAction);
+		//Look Action
+		enhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::DoLookAction);
+	}
 }
+
+void APlayerCharacter::DoMoveAction(const FInputActionValue& actionValue)
+{
+	FVector inputVector = actionValue.Get<FVector>();
+	DoMove(inputVector, MoveSpeed);
+	// UE_LOG(LogTemp, Warning, TEXT("DoMoveAction (FVector): %s"), *InputVector.ToString());
+}
+
+void APlayerCharacter::DoLookAction(const FInputActionValue& actionValue)
+{
+	FVector inputVector = actionValue.Get<FVector>();
+	float lookX = inputVector.X;
+	float lookY = inputVector.Y;
+
+	DoTurn(lookX,MouseSensitivity);
+	DoMouseLook(lookY);
+	UE_LOG(LogTemp, Warning, TEXT("DoLookAction X: %f & Y: %f"), lookX, lookY);
+}
+
+void APlayerCharacter::DoMouseLook(float turndirection)
+{
+	FRotator NewRotation = CameraComp->GetRelativeRotation();
+	NewRotation.Pitch = FMath::Clamp(NewRotation.Pitch + turndirection * MouseSensitivity * GetWorld()->GetDeltaSeconds(), -1*MaxLookAngle, MaxLookAngle);
+	CameraComp->SetRelativeRotation(NewRotation);
+}
+
 

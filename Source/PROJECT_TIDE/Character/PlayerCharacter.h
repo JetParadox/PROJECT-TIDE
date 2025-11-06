@@ -3,27 +3,31 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "BasePawn.h"
 
-//Camera
-#include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
-
-//Inputs
-#include "InputMappingContext.h"
+//PreProcessor Derivatives for Inputs
+#include "InputAction.h"
+#include "InputActionValue.h"
+#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Quaternion.h"
 
 #include "PlayerCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+class UInputMappingContext;
+
+/**
+ * 
+ */
 UCLASS()
-class PROJECT_TIDE_API APlayerCharacter : public ACharacter
+class PROJECT_TIDE_API APlayerCharacter : public ABasePawn
 {
 	GENERATED_BODY()
-
+	
 public:
-	// Sets default values for this character's properties
 	APlayerCharacter();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -33,22 +37,43 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;
 
-	UPROPERTY(VisibleAnywhere)
-    UCapsuleComponent* CapsuleComp;
-	
-    UPROPERTY(EditAnywhere, Category = "Visuals")
-    UStaticMeshComponent* PlayerMesh;
-	
-    UPROPERTY(VisibleAnywhere, Category="Camera")
-    USpringArmComponent* SpringArmComp;
-   
-    UPROPERTY(VisibleAnywhere, Category="Camera")
-   	UCameraComponent* CameraComp;
-	
-    UPROPERTY(EditAnywhere, Category="Inputs")
-    UInputMappingContext* DefaultMappingContext;
+private:
 
+	UPROPERTY(VisibleAnywhere, Category="Camrera")
+	USpringArmComponent* SpringArmComp;
 
+	UPROPERTY(VisibleAnywhere, Category="Camrera")
+	UCameraComponent* CameraComp;
+
+	//Values for Inputs
+	UPROPERTY(EditAnywhere, Category="Inputs")
+	UInputMappingContext* DefaultMappingContext;
+
+	UPROPERTY(EditAnywhere, Category="Inputs")
+	UInputAction* MoveAction;
+
+	UPROPERTY(EditAnywhere, Category="Inputs")
+	UInputAction* LookAction;
+
+	//Values for Mouse Looks
+	UPROPERTY(EditAnywhere, Category = "Player Movement")
+	float MouseSensitivity = 100.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Player Movement")
+	float  MaxLookAngle = 80.0f;
+	//Values for Players
+	UPROPERTY(EditAnywhere, Category = "Player Movement")
+	float MoveSpeed = 100.0f;
+
+public:
+	//Input Functions
+	void DoMoveAction(const FInputActionValue& actionValue);
+	
+	void DoLookAction(const FInputActionValue& actionValue);
+
+	void DoMouseLook (float turndirection);
+	
+	
 };

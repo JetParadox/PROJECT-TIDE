@@ -8,31 +8,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8aac70d0-b0b6-4d85-9d62-dfc5b12f8e1b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PROJECT_TIDE.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PROJECT_TIDE.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_Main_GameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_Main_GameMode.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Player.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Player.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Inputs/IMC_DefaultMappings.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Inputs/IMC_DefaultMappings.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Levels/Testing/GeneralTestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/Testing/GeneralTestMap.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/CachedAssetRegistry_0.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/CachedAssetRegistry_0.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/AutoScreenshot.png" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/AutoScreenshot.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Saved/Config/WindowsEditor/Editor.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/Config/WindowsEditor/Editor.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/Config/WindowsEditor/EditorPerProjectUserSettings.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/Config/WindowsEditor/EditorPerProjectUserSettings.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/Logs/PROJECT_TIDE.log" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/Logs/PROJECT_TIDE.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/SourceControl/UncontrolledChangelists.json" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/SourceControl/UncontrolledChangelists.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/PROJECT_TIDE.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PROJECT_TIDE/PROJECT_TIDE.Build.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/Test.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/Test.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/Character/PlayerCharacter.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/Character/PlayerCharacter.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/Main_GameModeBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PROJECT_TIDE/Main_GameModeBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/Main_GameModeBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PROJECT_TIDE/Main_GameModeBase.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="cidr-memory-view://0" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/Engine/NavigationObjectBase.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="Toolset" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -48,6 +56,7 @@
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Uproject.PROJECT_TIDE.executor&quot;: &quot;Debug&quot;,
     &quot;git-widget-placeholder&quot;: &quot;P__TestA&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -144,6 +153,9 @@
       <workItem from="1762301741392" duration="398000" />
       <workItem from="1762302931624" duration="287000" />
       <workItem from="1762305095267" duration="1223000" />
+      <workItem from="1762383933185" duration="479000" />
+      <workItem from="1762384700130" duration="9333000" />
+      <workItem from="1762437142001" duration="7471000" />
     </task>
     <servers />
   </component>
