@@ -73,3 +73,13 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Other / IDE-specific
+.idea/
+.vscode/
+
+# Visual Studio user-specific files
+*.user
+*.suo
+*.userprefs
+*.rsuser
