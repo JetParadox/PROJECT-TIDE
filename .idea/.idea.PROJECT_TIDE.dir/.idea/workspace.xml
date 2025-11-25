@@ -8,21 +8,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8aac70d0-b0b6-4d85-9d62-dfc5b12f8e1b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PROJECT_TIDE.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PROJECT_TIDE.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PROJECT_TIDE/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PROJECT_TIDE/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_Main_GameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_Main_GameMode.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Player.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Player.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Character/BP_Player.uasset" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Inputs/IMC_DefaultMappings.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Inputs/IMC_DefaultMappings.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Levels/Testing/GeneralTestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/Testing/GeneralTestMap.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/Testing/TimerTestMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/Testing/TimerTestMap.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Intermediate/CachedAssetRegistry_0.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Intermediate/CachedAssetRegistry_0.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/AutoScreenshot.png" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/AutoScreenshot.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Saved/Config/CrashReportClient/UECC-Windows-936AC3E84C722FE8777051A844CF97A9/CrashReportClient.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Saved/Config/CrashReportClient/UECC-Windows-A4A3494544631DAEDED1F1A532216719/CrashReportClient.ini" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/Config/WindowsEditor/EditorPerProjectUserSettings.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/Config/WindowsEditor/EditorPerProjectUserSettings.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Saved/Logs/PROJECT_TIDE-backup-2025.10.29-16.16.40.log" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/Logs/PROJECT_TIDE.log" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/Logs/PROJECT_TIDE.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Saved/SourceControl/UncontrolledChangelists.json" beforeDir="false" afterPath="$PROJECT_DIR$/Saved/SourceControl/UncontrolledChangelists.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/Character/BasePawn.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/Character/BasePawn.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/Character/PlayerCharacter.cpp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/Character/PlayerCharacter.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/Main_GameModeBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PROJECT_TIDE/Main_GameModeBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/PROJECT_TIDE/Main_GameModeBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PROJECT_TIDE/Main_GameModeBase.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +40,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://0" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://1" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Epic Games/UE_5.6/Engine/Source/Runtime/Engine/Classes/Engine/NavigationObjectBase.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProblemsViewState">
@@ -55,6 +59,7 @@
     &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;Uproject.PROJECT_TIDE.executor&quot;: &quot;Debug&quot;,
     &quot;git-widget-placeholder&quot;: &quot;P__TestA&quot;,
@@ -156,6 +161,9 @@
       <workItem from="1762383933185" duration="479000" />
       <workItem from="1762384700130" duration="9333000" />
       <workItem from="1762437142001" duration="7471000" />
+      <workItem from="1763935227148" duration="8656000" />
+      <workItem from="1764021636796" duration="10521000" />
+      <workItem from="1764064710114" duration="6857000" />
     </task>
     <servers />
   </component>
@@ -183,5 +191,13 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

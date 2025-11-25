@@ -3,31 +3,29 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BasePawn.h"
-
-//PreProcessor Derivatives for Inputs
-#include "InputAction.h"
-#include "InputActionValue.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
-#include "Quaternion.h"
-
+#include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
-class UInputMappingContext;
+class UInputAction;
+struct FInputActionValue;
 
-/**
- * 
- */
 UCLASS()
-class PROJECT_TIDE_API APlayerCharacter : public ABasePawn
+class PROJECT_TIDE_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
-	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess=true))
+	USpringArmComponent* SpringArm;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess=true))
+	UCameraComponent* FollowCamera;
+
 public:
+	// Sets default values for this character's properties
 	APlayerCharacter();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -37,43 +35,64 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* playerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	//Variables
 private:
-
-	UPROPERTY(VisibleAnywhere, Category="Camrera")
-	USpringArmComponent* SpringArmComp;
-
-	UPROPERTY(VisibleAnywhere, Category="Camrera")
-	UCameraComponent* CameraComp;
-
-	//Values for Inputs
-	UPROPERTY(EditAnywhere, Category="Inputs")
-	UInputMappingContext* DefaultMappingContext;
-
-	UPROPERTY(EditAnywhere, Category="Inputs")
+	/** Maximum Pitch Rotation Angle */
+	UPROPERTY(EditAnywhere, Category="Player Camera")
+	float MaxLookYAngle = 80.0f;
+	UPROPERTY(EditAnywhere, Category="Player Camera")
+	float MouseSensitivity = 1.0f;
+	
+protected:
+	
+	/** Move Input Action */
+	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MoveAction;
 
-	UPROPERTY(EditAnywhere, Category="Inputs")
+	/** Look Input Action */
+	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* LookAction;
+	
+	/** Jump Input Action */
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* JumpAction;
 
-	//Values for Mouse Looks
-	UPROPERTY(EditAnywhere, Category = "Player Movement")
-	float MouseSensitivity = 100.0f;
-
-	UPROPERTY(EditAnywhere, Category = "Player Movement")
-	float  MaxLookAngle = 80.0f;
-	//Values for Players
-	UPROPERTY(EditAnywhere, Category = "Player Movement")
-	float MoveSpeed = 100.0f;
-
+	//Inline Functions
 public:
-	//Input Functions
-	void DoMoveAction(const FInputActionValue& actionValue);
-	
-	void DoLookAction(const FInputActionValue& actionValue);
+	/** Returns CameraBoom subobject **/
+	FORCEINLINE class USpringArmComponent* GetSpringArm() const { return SpringArm; }
 
-	void DoMouseLook (float turndirection);
+	/** Returns FollowCamera subobject **/
+	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	
-	
+	//Functions
+protected:
+
+	/** Called for movement input */
+	void Move(const FInputActionValue& Value);
+
+	/** Called for looking input */
+	void Look(const FInputActionValue& Value);
+
+	/** Handles move inputs from either controls or UI interfaces */
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoMove(float Right, float Forward);
+
+	/** Handles look inputs from either controls or UI interfaces */
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoMouseLook(float LookY);
+
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoTurn(float LookX);
+
+	/** Handles jump pressed inputs from either controls or UI interfaces */
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoJumpStart();
+
+	/** Handles jump pressed inputs from either controls or UI interfaces */
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoJumpEnd();
+
 };
