@@ -13,5 +13,6 @@ UCLASS()
 class PROJECT_TIDE_API AMain_GameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+
 };

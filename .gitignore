@@ -49,6 +49,7 @@ SourceArt/**/*.tga
 # Binary Files
 Binaries/*
 Plugins/**/Binaries/*
+*.pdb
 
 # Builds
 Build/*
@@ -57,6 +58,7 @@ Build/*
 !Build/*/
 Build/*/**
 !Build/*/PakBlacklist*.txt
+*.ucas
 
 # Don't ignore icon files in Build
 !Build/**/*.ico
@@ -73,6 +75,7 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
 
 # Other / IDE-specific
 .idea/

@@ -4,21 +4,23 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-
-//Camera
-#include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
-
-//Inputs
-#include "InputMappingContext.h"
-#include "EnhancedInputSubsystems.h"
-
 #include "PlayerCharacter.generated.h"
+
+class USpringArmComponent;
+class UCameraComponent;
+class UInputAction;
+struct FInputActionValue;
 
 UCLASS()
 class PROJECT_TIDE_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess=true))
+	USpringArmComponent* SpringArm;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess=true))
+	UCameraComponent* FollowCamera;
 
 public:
 	// Sets default values for this character's properties
@@ -35,20 +37,62 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(VisibleAnywhere)
-    UCapsuleComponent* CapsuleComp;
+	//Variables
+private:
+	/** Maximum Pitch Rotation Angle */
+	UPROPERTY(EditAnywhere, Category="Player Camera")
+	float MaxLookYAngle = 80.0f;
+	UPROPERTY(EditAnywhere, Category="Player Camera")
+	float MouseSensitivity = 1.0f;
 	
-    UPROPERTY(EditAnywhere, Category = "Visuals")
-    UStaticMeshComponent* PlayerMesh;
+protected:
 	
-    UPROPERTY(VisibleAnywhere, Category="Camera")
-    USpringArmComponent* SpringArmComp;
-   
-    UPROPERTY(VisibleAnywhere, Category="Camera")
-   	UCameraComponent* CameraComp;
-	
-    UPROPERTY(EditAnywhere, Category="Inputs")
-    UInputMappingContext* DefaultMappingContext;
+	/** Move Input Action */
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* MoveAction;
 
+	/** Look Input Action */
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* LookAction;
+	
+	/** Jump Input Action */
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* JumpAction;
+
+	//Inline Functions
+public:
+	/** Returns CameraBoom subobject **/
+	FORCEINLINE class USpringArmComponent* GetSpringArm() const { return SpringArm; }
+
+	/** Returns FollowCamera subobject **/
+	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	
+	//Functions
+protected:
+
+	/** Called for movement input */
+	void Move(const FInputActionValue& Value);
+
+	/** Called for looking input */
+	void Look(const FInputActionValue& Value);
+
+	/** Handles move inputs from either controls or UI interfaces */
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoMove(float Right, float Forward);
+
+	/** Handles look inputs from either controls or UI interfaces */
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoMouseLook(float LookY);
+
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoTurn(float LookX);
+
+	/** Handles jump pressed inputs from either controls or UI interfaces */
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoJumpStart();
+
+	/** Handles jump pressed inputs from either controls or UI interfaces */
+	UFUNCTION(BlueprintCallable, Category="Input")
+	virtual void DoJumpEnd();
 
 };
