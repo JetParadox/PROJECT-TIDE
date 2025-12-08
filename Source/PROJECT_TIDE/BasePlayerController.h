@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "HUD/HUDWidget.h"
 #include "BasePlayerController.generated.h"
 
 class UInputMappingContext;
@@ -20,5 +21,18 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TArray<UInputMappingContext*> DefaultMappingContext;
 
+	UPROPERTY(EditAnywhere, Category="HUD")
+	TSubclassOf<UHUDWidget> HudWidgetClass;
+
+public:
+	UPROPERTY(VisibleAnywhere, Category="HUD")
+	UHUDWidget* HudWidget;
+
+	virtual void BeginPlay() override;
+	
 	virtual void SetupInputComponent() override;
+
+public:
+
+	
 };
