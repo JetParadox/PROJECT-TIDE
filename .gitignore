@@ -86,3 +86,6 @@ DerivedDataCache/*
 *.suo
 *.userprefs
 *.rsuser
+/.idea
+/Intermediate
+/Saved
