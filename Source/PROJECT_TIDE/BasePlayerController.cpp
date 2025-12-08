@@ -6,6 +6,20 @@
 #include "Engine/LocalPlayer.h"
 #include "InputMappingContext.h"
 
+void ABasePlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	if (IsLocalController())
+	{
+		HudWidget = CreateWidget<UHUDWidget>(this, HudWidgetClass);
+		if (HudWidget)
+		{
+			HudWidget->AddToViewport();
+		}
+	}
+}
+
 void ABasePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();

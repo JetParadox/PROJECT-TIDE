@@ -10,6 +10,8 @@
 
 #include "TimeActor.generated.h"
 
+class AMain_GameModeBase;
+
 UCLASS()
 class PROJECT_TIDE_API ATimeActor : public AActor
 {
@@ -37,26 +39,49 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category="Directional Light")
 	FRotator EndDirectionalLightRotation = FRotator(-179.0f,180.0f,0.0f);
+	
+	UPROPERTY(EditAnywhere, Category="Directional Light")
+	FLinearColor  StartDirectionalLightColor = FLinearColor(0.939236f,0.761649f,0.504718f,1.000000f);
+	
+	UPROPERTY(EditAnywhere, Category="Directional Light")
+	FLinearColor  EndDirectionalLightColor = FLinearColor(0.131778f,0.200854f,0.352430f,1.000000f);
 
 	UPROPERTY(VisibleAnywhere, Category="Time")
 	float Time;
 
 	UPROPERTY(EditAnywhere, Category="Time")
-	float PrepTime = 10.0f;
+	float PrepTime = 60.0f;
 
 	UPROPERTY(EditAnywhere, Category="Time")
-	float GameTime = 10.0f;
+	float GameTime = 180.0f;
 
 	UPROPERTY(EditAnywhere, Category="Time")
-	float GameToRealTimeMultiplier = 1.0f;
+	float GameToRealTimeMultiplier = 2.0f;
+public:
+	UPROPERTY(EditAnywhere, Category="Time")
+	int32 StartOffsetHours = 6;
+
+	UPROPERTY(EditAnywhere, Category="Time")
+	int32 StartOffsetMinutes = 0;
+private:
+	UPROPERTY(VisibleAnywhere, Category="GameMode")
+	AMain_GameModeBase* GameMode = nullptr;
 
 	int32 TotalInGameTime;
-	int32 TimeInSeconds;
+	int32 InGameTime;
 	int32 TimeInMinutes;
+	int32 TimeInHours;
+	int32 NextSuffixSwapTime;
+	FString TimeSuffix;
 	
 	float ElapsedTime = 0.0f;
+	float ElapsedColorTime = 0.0f;
 
 	bool bIsLerping = false;
+	bool bIsColorChanging = false;
+	bool bIsTimeSuffixSwapped = false;
+
+	FString TimeInString;
 
 	FQuat StartQuaternion;
 	FQuat EndQuaternion;
@@ -70,5 +95,17 @@ private:
 	void ResetTime();
 
 	void RotateDirectionalLight(float DeltaTime);
+	void ChangeColorDirectionalLight(float DeltaTime);
+
+	
+	void SwapTimeSuffix();
+
+public:
+	FString FormatTime(int32 TimeCount);
+	
+	//Getters and Setters
+	float GetTime() const { return Time; }
+	FString GetTimeString() const { return TimeInString; }
+	
 
 };
