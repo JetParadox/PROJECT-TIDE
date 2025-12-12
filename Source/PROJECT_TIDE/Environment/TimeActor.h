@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 
-#include "Kismet/GameplayStatics.h"
 #include "Engine/DirectionalLight.h"
 
 #include "TimeActor.generated.h"
@@ -72,6 +71,7 @@ private:
 	int32 TimeInMinutes;
 	int32 TimeInHours;
 	int32 NextSuffixSwapTime;
+	int32 OffsetTime;
 	FString TimeSuffix;
 	
 	float ElapsedTime = 0.0f;
@@ -85,6 +85,8 @@ private:
 
 	FQuat StartQuaternion;
 	FQuat EndQuaternion;
+
+	FTimerHandle MainTimerHandle;
 	
 	//Inline Functions
 	
@@ -92,7 +94,7 @@ private:
 private:
 	void UpdateTime();
 
-	void ResetTime();
+	
 
 	void RotateDirectionalLight(float DeltaTime);
 	void ChangeColorDirectionalLight(float DeltaTime);
@@ -102,6 +104,12 @@ private:
 
 public:
 	FString FormatTime(int32 TimeCount);
+
+	void ResetTime();
+
+	void PauseTimer();
+	void ResumeTimer();
+	
 	
 	//Getters and Setters
 	float GetTime() const { return Time; }

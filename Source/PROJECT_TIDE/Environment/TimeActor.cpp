@@ -6,6 +6,7 @@
 #include "Math/UnrealMathUtility.h"
 #include "../Main_GameModeBase.h"
 
+#include "Kismet/GameplayStatics.h"
 
 #define LogAsError(x) UE_LOG(LogTemp, Error, TEXT(x))
 
@@ -17,10 +18,6 @@ ATimeActor::ATimeActor()
 
 	//Get A Reference to Directional Light
 	DirectionalLight = Cast<ADirectionalLight>(	UGameplayStatics::GetActorOfClass(GetWorld(), ADirectionalLight::StaticClass()));
-
-	
-	
-
 }
 
 // Called when the game starts or when spawned
@@ -39,14 +36,14 @@ void ATimeActor::BeginPlay()
 	FormatTime(InGameTime);
 	if (GameMode)
 	{
-		GameMode->UpdateTimeStringInGameMode(TimeInString);
+		GameMode->UpdateTimeStringInGameMode(TimeInString, InGameTime, StartOffsetHours * 60 + StartOffsetMinutes);
 	}else
 	{
 		LogAsError("GameMode Not Found in TimeActor At BeginPlay");
 	}
 	TotalInGameTime = PrepTime + GameTime;
-	FTimerHandle TimerHandle;
-	GetWorldTimerManager().SetTimer(TimerHandle, this, &ATimeActor::UpdateTime, 1.0f,true);	
+	
+	GetWorldTimerManager().SetTimer(MainTimerHandle, this, &ATimeActor::UpdateTime, 1.0f,true);	
 	
 	if (DirectionalLight)
 	{
@@ -75,12 +72,23 @@ void ATimeActor::Tick(float DeltaTime)
  */
 void ATimeActor::UpdateTime()
 {
+	OffsetTime = StartOffsetHours * 60 + StartOffsetMinutes;
 	Time++;
 	InGameTime = (Time * GameToRealTimeMultiplier);
 	FormatTime(InGameTime);
+	
+	if (Time == (TotalInGameTime))
+	{
+		if (GameMode)
+		{
+			PauseTimer();
+			GameMode->IncreaseDayCount(this);
+		}
+		
+	}
 	if (GameMode)
 	{
-		GameMode->UpdateTimeStringInGameMode(TimeInString);
+		GameMode->UpdateTimeStringInGameMode(TimeInString, InGameTime, OffsetTime);
 	}
 }
 
@@ -89,7 +97,7 @@ void ATimeActor::UpdateTime()
  */
 void ATimeActor::ResetTime()
 {
-	Time = 0;
+	Time = -1;
 	InGameTime = (Time * GameToRealTimeMultiplier);
 	NextSuffixSwapTime = 12;
 	TimeInMinutes = StartOffsetMinutes;
@@ -100,7 +108,24 @@ void ATimeActor::ResetTime()
 	bIsLerping = true;
 	bIsColorChanging = true;
 	bIsTimeSuffixSwapped = false;
+	if (GameMode)
+	{
+		GameMode->UpdateTimeStringInGameMode(TimeInString, InGameTime, OffsetTime);
+	}
+	if (DirectionalLight)
+	{
+		
+		//Speed To Interpolate
+		StartQuaternion = StartDirectionalLightRotation.Quaternion();
+		EndQuaternion = EndDirectionalLightRotation.Quaternion();
+		
+		DirectionalLight->SetActorRotation(StartQuaternion);
+		DirectionalLight->SetLightColor(StartDirectionalLightColor);
+		
+	}
 }
+
+
 
 /*
  *Changes The Rotation of the Directional Light over Time until Alpha >= 1
@@ -197,6 +222,15 @@ void ATimeActor::SwapTimeSuffix()
 	} else if (TimeSuffix == "PM"){
 		TimeSuffix = "AM";
 	}
-	
+}
+
+void ATimeActor::PauseTimer()
+{
+	GetWorldTimerManager().PauseTimer(MainTimerHandle);
+}
+
+void ATimeActor::ResumeTimer()
+{
+	GetWorldTimerManager().UnPauseTimer(MainTimerHandle);
 }
 
