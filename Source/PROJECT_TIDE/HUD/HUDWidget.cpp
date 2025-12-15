@@ -5,6 +5,7 @@
 #include "Components/TextBlock.h"
 #include "../Environment/TimeActor.h"
 
+#include "Kismet/GameplayStatics.h"
 
 void UHUDWidget::NativeConstruct()
 {
@@ -29,3 +30,5 @@ void UHUDWidget::UpdateDay(int32 Day)
 {
 	DayCount->SetText(FText::FromString(FString::FromInt(Day)));
 }
+
+
