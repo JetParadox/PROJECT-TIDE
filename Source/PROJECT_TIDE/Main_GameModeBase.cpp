@@ -110,7 +110,7 @@ void AMain_GameModeBase::UpdateTimeStringInGameMode(FString const TimeString, in
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 	if (PlayerController)
 	{
-		if (UHUDWidget* HudWidget = PlayerController->HudWidget;)
+		if (UHUDWidget* HudWidget = PlayerController->HudWidget)
 		{
 			HudWidget->UpdateTime(TimeString);
 		} else
