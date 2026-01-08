@@ -11,17 +11,15 @@
 void AMainMenuGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	// PlayerController = UGameplayStatics::GetPlayerController(this,0);
-	// if (PlayerController)
-	// {
-	// 	MainMenuHudWidget = CreateWidget<UUserWidget>(this, MainMenuHudWidgetClass);
-	// 	if (MainMenuHudWidget)
-	// 	{
-	// 		MainMenuHudWidget->AddToViewport(1);
-	// 	}
-	// 	LogAsWarning("AMainMenuGameModeBase::BeginPlay Created Widget")
-	// } else
-	// {
-	// 	LogAsError("AMainMenuGameModeBase::CreateWidget failed");
-	// }
+	PlayerController = UGameplayStatics::GetPlayerController(this,0);
+	if (PlayerController)
+	{
+		MainMenuHudWidget = CreateWidget<UMainMenuUserWidget>(PlayerController, MainMenuHudWidgetClass);
+		if (MainMenuHudWidget)
+		{
+			MainMenuHudWidget->AddToViewport(1);
+			LogAsWarning("AMainMenuGameModeBase::BeginPlay Added Widget to Viewport.")
+		}
+		LogAsWarning("AMainMenuGameModeBase::BeginPlay Created Widget")
+	}
 }
