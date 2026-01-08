@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Image.h"
 #include "HUDWidget.generated.h"
 
 class UTextBlock;
@@ -22,6 +23,14 @@ protected:
 	virtual void NativeConstruct();
 
 public:
+	//Icon
+	UPROPERTY(VisibleAnywhere, Category="Icon Settings", meta = (BindWidget))
+	UImage* SunIcon;
+	
+	UPROPERTY(VisibleAnywhere, Category="Icon Settings", meta = (BindWidget))
+	UImage* MoonIcon;
+	
+	//Text Blocks
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="HUD", meta = (BindWidget))
 	UTextBlock* DayCount;
 
@@ -30,6 +39,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category="Time")
 	ATimeActor* TimeActorRef;
+
+	void isSunShown(bool bShowSun);
 
 	void UpdateTime(FString TimeString);
 	void UpdateDay(int32 Day);

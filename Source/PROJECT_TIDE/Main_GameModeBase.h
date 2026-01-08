@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 
 #include "Environment/TimeActor.h"
+#include "HUD/HUDWidget.h"
+#include "HUD/PauseUserWidget.h"
 
 #include "Main_GameModeBase.generated.h"
 
@@ -35,6 +37,16 @@ private:
 	UPROPERTY(VisibleAnywhere, Category="Time Settings")
 	int32 CurrentTime = 0;
 
+	UPROPERTY(EditAnywhere, Category="Lights Settings")
+	int32 IconTransitionHours = 0.0f;
+	
+	UPROPERTY(EditAnywhere, Category="Lights Settings")
+	int32 IconTransitionMinutes = 0.0f;
+	
+	UPROPERTY(EditAnywhere, Category="Lights Settings")
+	FString IconTransitionOnSuffix = "PM";
+
+
 	//Changeable Lights Settings
 	UPROPERTY(EditAnywhere, Category="Lights Settings")
 	int32 TurnLightsOnHours = 0.0f;
@@ -58,12 +70,16 @@ private:
 	float CurrentChangeableLightIntensity = 0.0f;
 
 	int32 TimeToTurnOn;
+	int32 TimeToTransitionIcon;
 	
 	bool bIsEndGameTriggered = false;
+	bool bIsSunIconShown = true;
 
 	// References
 	ABasePlayerController* PlayerController = nullptr;
 	ATimeActor* TimeActor = nullptr;
+	UHUDWidget* HudWidget = nullptr;
+	UPauseUserWidget* PauseWidget = nullptr;
 	
 	TArray<ALight*> TaggedLights;
 
@@ -74,4 +90,16 @@ public:
 	void UpdateDayCountInGameMode(int32 const Day);
 	void IncreaseDayCount(ATimeActor *CurrentTimeActor);
 	void TurnLightsOn( int32 Time, int32 OffsetTime);
+	void CheckTransitionIcon( int32 Time, int32 OffsetTime);
+
+	void PauseGame();
+	
+	UFUNCTION(BlueprintCallable)
+	void ResumeGame();
+
+	//Inline Functions
+	bool IsSunIconShown() { return bIsSunIconShown;};
+
+private:
+	int32 ConvertTimeToInt32(int32 Hours, int32 Minutes, FString Suffix);
 };
