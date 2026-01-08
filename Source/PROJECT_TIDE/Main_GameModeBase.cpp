@@ -49,6 +49,13 @@ void AMain_GameModeBase::BeginPlay()
 	}
 	UE_LOG(LogTemp, Warning, TEXT("AMain_GameModeBase::BeginPlay: Changeable Lights Found in GameMode: %d"), TaggedLights.Num());
 
+	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+	if (PlayerController)
+	{
+		PlayerController->bShowMouseCursor = false;
+		PlayerController->SetInputMode(FInputModeGameOnly());
+	}
+
 }
 
 void AMain_GameModeBase::Tick(float DeltaTime)

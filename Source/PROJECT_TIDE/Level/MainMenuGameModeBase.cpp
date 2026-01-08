@@ -14,10 +14,12 @@ void AMainMenuGameModeBase::BeginPlay()
 	PlayerController = UGameplayStatics::GetPlayerController(this,0);
 	if (PlayerController)
 	{
+		PlayerController->bShowMouseCursor = true;
 		MainMenuHudWidget = CreateWidget<UMainMenuUserWidget>(PlayerController, MainMenuHudWidgetClass);
 		if (MainMenuHudWidget)
 		{
 			MainMenuHudWidget->AddToViewport(1);
+			PlayerController->SetInputMode(FInputModeUIOnly());
 			LogAsWarning("AMainMenuGameModeBase::BeginPlay Added Widget to Viewport.")
 		}
 		LogAsWarning("AMainMenuGameModeBase::BeginPlay Created Widget")
