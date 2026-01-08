@@ -14,8 +14,6 @@ void UHUDWidget::NativeConstruct()
 	if (TimeActorRef != nullptr) {
 		FString TimeStringAtStart = TimeActorRef->FormatTime(0);
 		UpdateTime(TimeStringAtStart);
-	} else {
-		UE_LOG(LogTemp, Error, TEXT(" UHUDWidget::NativeConstruct: TimeActorRef Not Found in HUDWidget"));
 	}
 	
 	UpdateDay(1);

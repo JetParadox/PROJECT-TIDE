@@ -6,8 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 
 #include "Environment/TimeActor.h"
-#include "Components/Image.h"
 #include "HUD/HUDWidget.h"
+#include "HUD/PauseUserWidget.h"
 
 #include "Main_GameModeBase.generated.h"
 
@@ -47,7 +47,6 @@ private:
 	FString IconTransitionOnSuffix = "PM";
 
 
-
 	//Changeable Lights Settings
 	UPROPERTY(EditAnywhere, Category="Lights Settings")
 	int32 TurnLightsOnHours = 0.0f;
@@ -74,11 +73,13 @@ private:
 	int32 TimeToTransitionIcon;
 	
 	bool bIsEndGameTriggered = false;
+	bool bIsSunIconShown = true;
 
 	// References
 	ABasePlayerController* PlayerController = nullptr;
 	ATimeActor* TimeActor = nullptr;
 	UHUDWidget* HudWidget = nullptr;
+	UPauseUserWidget* PauseWidget = nullptr;
 	
 	TArray<ALight*> TaggedLights;
 
@@ -90,6 +91,14 @@ public:
 	void IncreaseDayCount(ATimeActor *CurrentTimeActor);
 	void TurnLightsOn( int32 Time, int32 OffsetTime);
 	void CheckTransitionIcon( int32 Time, int32 OffsetTime);
+
+	void PauseGame();
+	
+	UFUNCTION(BlueprintCallable)
+	void ResumeGame();
+
+	//Inline Functions
+	bool IsSunIconShown() { return bIsSunIconShown;};
 
 private:
 	int32 ConvertTimeToInt32(int32 Hours, int32 Minutes, FString Suffix);

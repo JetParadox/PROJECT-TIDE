@@ -22,6 +22,7 @@ void AMain_GameModeBase::BeginPlay()
 	Super::BeginPlay();
 
 	bIsEndGameTriggered = false;
+	bIsSunIconShown = true;
 	CurrentChangeableLightIntensity = StartIntensity;
 	
 	TimeToTransitionIcon = ConvertTimeToInt32(IconTransitionHours, IconTransitionMinutes, IconTransitionOnSuffix);
@@ -47,6 +48,7 @@ void AMain_GameModeBase::BeginPlay()
 		}
 	}
 	UE_LOG(LogTemp, Warning, TEXT("AMain_GameModeBase::BeginPlay: Changeable Lights Found in GameMode: %d"), TaggedLights.Num());
+
 }
 
 void AMain_GameModeBase::Tick(float DeltaTime)
@@ -108,11 +110,13 @@ void AMain_GameModeBase::CheckTransitionIcon(int32 Time, int32 OffsetTime)
 	//Transition Icons at Specified Time
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 	HudWidget = PlayerController->HudWidget;
-	if (Time+OffsetTime >= TimeToTransitionIcon )
+	if (Time+OffsetTime >= TimeToTransitionIcon && bIsSunIconShown )
 	{
 		if (PlayerController && HudWidget)
 		{
-			HudWidget->isSunShown(false);
+			LogAsWarning("AMain_GameModeBase::CheckTransitionIcon: Sun Icon To Moon in GameMode");
+			bIsSunIconShown = false;
+			HudWidget->isSunShown(bIsSunIconShown);
 		} else
 		{
 			LogAsWarning("AMain_GameModeBase::CheckTransitionIcon: PlayerController or HUDWidget Not Found in GameMode");
@@ -120,6 +124,9 @@ void AMain_GameModeBase::CheckTransitionIcon(int32 Time, int32 OffsetTime)
 	}
 }
 
+/*
+    *Converts given time in Hours, Minutes and Suffix to total minutes in int32 format
+*/
 int32 AMain_GameModeBase::ConvertTimeToInt32(int32 Hours, int32 Minutes, FString Suffix)
 {
 	if (Suffix == "PM")
@@ -154,12 +161,13 @@ void AMain_GameModeBase::UpdateDayCountInGameMode(int32 const Day)
 {
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 	HudWidget = PlayerController->HudWidget;
+	bIsSunIconShown = true;
 	if (PlayerController)
 	{
 		if (HudWidget)
 		{
 			HudWidget->UpdateDay(Day);
-			HudWidget->isSunShown(true);
+			HudWidget->isSunShown(bIsSunIconShown);
 		} else
 		{
 			UE_LOG(LogTemp, Error, TEXT(" AMain_GameModeBase::UpdateDayCountInGameMode: HUD Widget Not Found in GameMode"));
@@ -174,4 +182,16 @@ void AMain_GameModeBase::UpdateDayCountInGameMode(int32 const Day)
 		TimeActor->ResetTime();
 		
 	}
+}
+
+void AMain_GameModeBase::PauseGame()
+{
+	if (PlayerController)
+	{
+		PlayerController->OpenPause(true, bIsSunIconShown);
+	}
+}
+
+void AMain_GameModeBase::ResumeGame()
+{
 }

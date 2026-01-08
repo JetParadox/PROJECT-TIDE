@@ -6,6 +6,8 @@
 #include "Engine/LocalPlayer.h"
 #include "InputMappingContext.h"
 
+#define LogAsWarning(x) UE_LOG(LogTemp, Warning, TEXT(x))
+
 void ABasePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -15,7 +17,7 @@ void ABasePlayerController::BeginPlay()
 		HudWidget = CreateWidget<UHUDWidget>(this, HudWidgetClass);
 		if (HudWidget)
 		{
-			HudWidget->AddToViewport();
+			HudWidget->AddToViewport(10);
 		}
 	}
 }
@@ -35,3 +37,42 @@ void ABasePlayerController::SetupInputComponent()
 		}
 	}
 }
+
+void ABasePlayerController::OpenPause(bool bPause, bool bIsSunIconShown)
+{
+	if (IsLocalController())
+	{
+		if (bPause)
+		{
+			if (!PauseHudWidget && PauseWidgetClass)
+			{
+				LogAsWarning("ABasePlayerController::OpenPause: Paused")
+				PauseHudWidget = CreateWidget<UPauseUserWidget>(this, PauseWidgetClass);
+				if (PauseHudWidget)
+				{
+					PauseHudWidget->AddToViewport(10);  
+					PauseHudWidget->SetVisibility(ESlateVisibility::Visible);
+					PauseHudWidget->UpdateSunIcon(bIsSunIconShown);
+					SetInputMode(FInputModeUIOnly());
+					bShowMouseCursor = true;
+				}
+			}
+
+			SetPause(true);
+		} else
+		{
+			SetPause(false);
+
+			if (PauseHudWidget)
+			{
+				PauseHudWidget->RemoveFromParent();
+				PauseHudWidget = nullptr;
+			}
+
+			bShowMouseCursor = false;
+			SetInputMode(FInputModeGameOnly());
+		}
+	}
+}
+
+
