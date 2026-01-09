@@ -57,4 +57,24 @@ void UHUDWidget::UpdateDay(int32 Day)
 	DayCount->SetText(FText::FromString(FString::FromInt(Day)));
 }
 
+void UHUDWidget::UpdateResourceCountsInHUD(int32 Fish, int32 Trash, int32 Customer, int32 Currency)
+{
+	FString FishString = FString::FromInt(Fish);
+	FString TrashString = FString::FromInt(Trash);
+	FString CustomerString = FString::FromInt(Customer);
+	FString CurrencyString = FString::FromInt(Currency);
+
+	//Adding leading zero if less than 10
+	Fish <=9 ? FishString = "0" + FishString : FishString;
+	Trash <=9 ? TrashString = "0" + TrashString : TrashString;
+	Customer <=9 ? CustomerString = "0" + CustomerString : CustomerString;
+	Currency <=9 ? CurrencyString = "0" + CurrencyString : CurrencyString;
+
+	//Updating Text Blocks
+	FishCount->SetText(FText::FromString(FishString));
+	TrashCount->SetText(FText::FromString(TrashString));
+	CustomerCount->SetText(FText::FromString(CustomerString));
+	CurrencyCount->SetText(FText::FromString(CurrencyString));
+}
+
 

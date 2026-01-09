@@ -69,8 +69,15 @@ private:
 	UPROPERTY(VisibleAnywhere, Category="Lights Settings")
 	float CurrentChangeableLightIntensity = 0.0f;
 
+	//Time Transition Variables
 	int32 TimeToTurnOn;
 	int32 TimeToTransitionIcon;
+
+	//Resource variables
+	int32 FishCount = 0;
+	int32 TrashCount = 0;
+	int32 CustomerCount = 0;
+	int32 CurrencyCount = 0;
 	
 	bool bIsEndGameTriggered = false;
 	bool bIsSunIconShown = true;
@@ -92,10 +99,23 @@ public:
 	void TurnLightsOn( int32 Time, int32 OffsetTime);
 	void CheckTransitionIcon( int32 Time, int32 OffsetTime);
 
-	void PauseGame();
-	
+	//Resource Setter Functions
 	UFUNCTION(BlueprintCallable)
-	void ResumeGame();
+	void SetFishCount(int32 const Fish);
+	UFUNCTION(BlueprintCallable)
+	void SetTrashCount(int32 const Trash);
+	UFUNCTION(BlueprintCallable)
+	void SetCustomerCount(int32 const Customer);
+	UFUNCTION(BlueprintCallable)
+	void SetCurrencyCount(int32 const Currency);
+	
+	void UpdateResourceCountsInGameMode(int32 Fish, int32 Trash, int32 Customer, int32 Currency);
+
+	//Trash Clearing Function
+	void ResetTrash();
+
+	//Pause Function
+	void PauseGame();
 
 	//Inline Functions
 	bool IsSunIconShown() { return bIsSunIconShown;};

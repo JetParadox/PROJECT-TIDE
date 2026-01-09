@@ -54,8 +54,10 @@ void AMain_GameModeBase::BeginPlay()
 	{
 		PlayerController->bShowMouseCursor = false;
 		PlayerController->SetInputMode(FInputModeGameOnly());
-	}
 
+		//Setting The UI to show Resource at start
+		UpdateResourceCountsInGameMode(FishCount,TrashCount,CustomerCount,CurrencyCount);
+	}
 }
 
 void AMain_GameModeBase::Tick(float DeltaTime)
@@ -183,6 +185,9 @@ void AMain_GameModeBase::UpdateDayCountInGameMode(int32 const Day)
 	{
 		UE_LOG(LogTemp, Error, TEXT(" AMain_GameModeBase::UpdateDayCountInGameMode: PlayerController Not Found in GameMode"));
 	}
+
+	//Reset Trash at the start of a new day
+	ResetTrash();
 	if (TimeActor)
 	{
 		TimeActor->ResumeTimer();
@@ -191,14 +196,56 @@ void AMain_GameModeBase::UpdateDayCountInGameMode(int32 const Day)
 	}
 }
 
+//Resource Setter Functions
+void AMain_GameModeBase::SetFishCount(int32 const Fish)
+{
+	FishCount = Fish;
+	UpdateResourceCountsInGameMode(FishCount,TrashCount,CustomerCount,CurrencyCount);
+}
+
+void AMain_GameModeBase::SetTrashCount(int32 const Trash)
+{
+	TrashCount = Trash;
+	UpdateResourceCountsInGameMode(FishCount,TrashCount,CustomerCount,CurrencyCount);
+}
+
+void AMain_GameModeBase::SetCustomerCount(int32 const Customer)
+{
+	CustomerCount = Customer;
+	UpdateResourceCountsInGameMode(FishCount,TrashCount,CustomerCount,CurrencyCount);
+}
+
+void AMain_GameModeBase::SetCurrencyCount(int32 const Currency)
+{
+	CurrencyCount = Currency;
+	UpdateResourceCountsInGameMode(FishCount,TrashCount,CustomerCount,CurrencyCount);
+}
+
+//Update Resource Counts in HUD Widget via PlayerController reference
+void AMain_GameModeBase::UpdateResourceCountsInGameMode(int32 Fish, int32 Trash, int32 Customer, int32 Currency)
+{
+	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+	HudWidget = PlayerController->HudWidget;
+	if (PlayerController)
+	{
+		if (HudWidget)
+		{
+			LogAsWarning ("AMain_GameModeBase::UpdateResourceCountsInGameMode: Updating Resource Counts in HUD Widget from GameMode");
+			HudWidget->UpdateResourceCountsInHUD(Fish,Trash,Customer,Currency);
+		}
+	}
+}
+
+void AMain_GameModeBase::ResetTrash()
+{
+	LogAsWarning ("AMain_GameModeBase::ResetTrash: Reseting Trash...");
+}
+
+//Pause the Game and Open Pause Menu
 void AMain_GameModeBase::PauseGame()
 {
 	if (PlayerController)
 	{
 		PlayerController->OpenPause(true, bIsSunIconShown);
 	}
-}
-
-void AMain_GameModeBase::ResumeGame()
-{
 }
