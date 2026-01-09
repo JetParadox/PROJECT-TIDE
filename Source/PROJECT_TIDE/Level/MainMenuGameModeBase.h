@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+
+#include "MainMenuUserWidget.h"
 #include "MainMenuGameModeBase.generated.h"
 
 /**
@@ -18,10 +20,10 @@ class PROJECT_TIDE_API AMainMenuGameModeBase : public AGameModeBase
 
 public:
 	UPROPERTY(EditAnywhere, Category="HUD")
-	TSubclassOf<UUserWidget> MainMenuHudWidgetClass;
+	TSubclassOf<UMainMenuUserWidget> MainMenuHudWidgetClass;
 	
 	UPROPERTY(VisibleAnywhere, Category="HUD")
-	UUserWidget* MainMenuHudWidget;
+	UMainMenuUserWidget* MainMenuHudWidget;
 private:
 	APlayerController* PlayerController;
 };
