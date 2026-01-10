@@ -49,6 +49,8 @@ void AMain_GameModeBase::BeginPlay()
 	}
 	UE_LOG(LogTemp, Warning, TEXT("AMain_GameModeBase::BeginPlay: Changeable Lights Found in GameMode: %d"), TaggedLights.Num());
 
+	
+	//Setting The Start of the game UI settings
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 	if (PlayerController)
 	{
@@ -119,7 +121,7 @@ void AMain_GameModeBase::CheckTransitionIcon(int32 Time, int32 OffsetTime)
 	//Transition Icons at Specified Time
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 	HudWidget = PlayerController->HudWidget;
-	if (Time+OffsetTime >= TimeToTransitionIcon && bIsSunIconShown )
+	if (Time+OffsetTime >= TimeToTransitionIcon && bIsSunIconShown && !isInBetweenDayTransition)
 	{
 		if (PlayerController && HudWidget)
 		{
@@ -171,6 +173,15 @@ void AMain_GameModeBase::UpdateDayCountInGameMode(int32 const Day)
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 	HudWidget = PlayerController->HudWidget;
 	bIsSunIconShown = true;
+	isInBetweenDayTransition = true;
+	if (TimeActor)
+	{
+		TimeActor->PauseTimer();
+	}
+	ResetTimerValue = MaxCountForTransitionTimer;
+
+	
+	//Update HUD Widget
 	if (PlayerController)
 	{
 		if (HudWidget)
@@ -181,18 +192,46 @@ void AMain_GameModeBase::UpdateDayCountInGameMode(int32 const Day)
 		{
 			UE_LOG(LogTemp, Error, TEXT(" AMain_GameModeBase::UpdateDayCountInGameMode: HUD Widget Not Found in GameMode"));
 		}
+		PlayerController->SetIgnoreMoveInput(true);
+		PlayerController->ResetPlayerTransforms();
+		PlayerController->ShowDayTransitionUI(true);
+		PlayerController->UpdateDayTransitionUI(ResetTimerValue);
 	} else
 	{
 		UE_LOG(LogTemp, Error, TEXT(" AMain_GameModeBase::UpdateDayCountInGameMode: PlayerController Not Found in GameMode"));
 	}
+	GetWorldTimerManager().SetTimer(ResetTimerHandle, this, &AMain_GameModeBase::EndDayTransition, 1.0f,true);
 
 	//Reset Trash at the start of a new day
 	ResetTrash();
-	if (TimeActor)
+	
+}
+
+void AMain_GameModeBase::EndDayTransition()
+{
+	if (ResetTimerValue < 0)
 	{
-		TimeActor->ResumeTimer();
-		TimeActor->ResetTime();
-		
+		//End the Timer
+		GetWorldTimerManager().ClearTimer(ResetTimerHandle);
+		if (TimeActor)
+		{
+			TimeActor->ResumeTimer();
+			TimeActor->ResetTime();
+		}
+		if (PlayerController)
+		{
+			PlayerController->ShowDayTransitionUI(false);
+		}
+		PlayerController->SetIgnoreMoveInput(false);
+		isInBetweenDayTransition= false;
+	}
+	else
+	{
+		if (PlayerController)
+		{
+			PlayerController->UpdateDayTransitionUI(ResetTimerValue);
+		}
+		ResetTimerValue--;
 	}
 }
 
@@ -238,7 +277,7 @@ void AMain_GameModeBase::UpdateResourceCountsInGameMode(int32 Fish, int32 Trash,
 
 void AMain_GameModeBase::ResetTrash()
 {
-	LogAsWarning ("AMain_GameModeBase::ResetTrash: Reseting Trash...");
+	LogAsWarning ("AMain_GameModeBase::ResetTrash: Resetting Trash...");
 }
 
 //Pause the Game and Open Pause Menu

@@ -7,6 +7,8 @@
 
 #include "Kismet/GameplayStatics.h"
 
+#define LogAsWarning(x) UE_LOG(LogTemp, Warning, TEXT(x))
+
 void UHUDWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -24,6 +26,7 @@ void UHUDWidget::NativeConstruct()
 
 void UHUDWidget::isSunShown(bool bShowSun)
 {
+	UE_LOG(LogTemp, Warning, TEXT(" UHUDWidget::isSunShown: bShowSun Value: %d"), bShowSun);
 	if (bShowSun)
 	{
 		if (SunIcon && MoonIcon)
