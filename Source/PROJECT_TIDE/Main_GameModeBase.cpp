@@ -49,13 +49,17 @@ void AMain_GameModeBase::BeginPlay()
 	}
 	UE_LOG(LogTemp, Warning, TEXT("AMain_GameModeBase::BeginPlay: Changeable Lights Found in GameMode: %d"), TaggedLights.Num());
 
+	
+	//Setting The Start of the game UI settings
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 	if (PlayerController)
 	{
 		PlayerController->bShowMouseCursor = false;
 		PlayerController->SetInputMode(FInputModeGameOnly());
-	}
 
+		//Setting The UI to show Resource at start
+		UpdateResourceCountsInGameMode(FishCount,TrashCount,CustomerCount,CurrencyCount);
+	}
 }
 
 void AMain_GameModeBase::Tick(float DeltaTime)
@@ -117,7 +121,7 @@ void AMain_GameModeBase::CheckTransitionIcon(int32 Time, int32 OffsetTime)
 	//Transition Icons at Specified Time
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 	HudWidget = PlayerController->HudWidget;
-	if (Time+OffsetTime >= TimeToTransitionIcon && bIsSunIconShown )
+	if (Time+OffsetTime >= TimeToTransitionIcon && bIsSunIconShown && !isInBetweenDayTransition)
 	{
 		if (PlayerController && HudWidget)
 		{
@@ -169,6 +173,15 @@ void AMain_GameModeBase::UpdateDayCountInGameMode(int32 const Day)
 	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 	HudWidget = PlayerController->HudWidget;
 	bIsSunIconShown = true;
+	isInBetweenDayTransition = true;
+	if (TimeActor)
+	{
+		TimeActor->PauseTimer();
+	}
+	ResetTimerValue = MaxCountForTransitionTimer;
+
+	
+	//Update HUD Widget
 	if (PlayerController)
 	{
 		if (HudWidget)
@@ -179,26 +192,99 @@ void AMain_GameModeBase::UpdateDayCountInGameMode(int32 const Day)
 		{
 			UE_LOG(LogTemp, Error, TEXT(" AMain_GameModeBase::UpdateDayCountInGameMode: HUD Widget Not Found in GameMode"));
 		}
+		PlayerController->SetIgnoreMoveInput(true);
+		PlayerController->ResetPlayerTransforms();
+		PlayerController->ShowDayTransitionUI(true);
+		PlayerController->UpdateDayTransitionUI(ResetTimerValue);
 	} else
 	{
 		UE_LOG(LogTemp, Error, TEXT(" AMain_GameModeBase::UpdateDayCountInGameMode: PlayerController Not Found in GameMode"));
 	}
-	if (TimeActor)
+	GetWorldTimerManager().SetTimer(ResetTimerHandle, this, &AMain_GameModeBase::EndDayTransition, 1.0f,true);
+
+	//Reset Trash at the start of a new day
+	ResetTrash();
+	
+}
+
+void AMain_GameModeBase::EndDayTransition()
+{
+	if (ResetTimerValue < 0)
 	{
-		TimeActor->ResumeTimer();
-		TimeActor->ResetTime();
-		
+		//End the Timer
+		GetWorldTimerManager().ClearTimer(ResetTimerHandle);
+		if (TimeActor)
+		{
+			TimeActor->ResumeTimer();
+			TimeActor->ResetTime();
+		}
+		if (PlayerController)
+		{
+			PlayerController->ShowDayTransitionUI(false);
+		}
+		PlayerController->SetIgnoreMoveInput(false);
+		isInBetweenDayTransition= false;
+	}
+	else
+	{
+		if (PlayerController)
+		{
+			PlayerController->UpdateDayTransitionUI(ResetTimerValue);
+		}
+		ResetTimerValue--;
 	}
 }
 
+//Resource Setter Functions
+void AMain_GameModeBase::SetFishCount(int32 const Fish)
+{
+	FishCount = Fish;
+	UpdateResourceCountsInGameMode(FishCount,TrashCount,CustomerCount,CurrencyCount);
+}
+
+void AMain_GameModeBase::SetTrashCount(int32 const Trash)
+{
+	TrashCount = Trash;
+	UpdateResourceCountsInGameMode(FishCount,TrashCount,CustomerCount,CurrencyCount);
+}
+
+void AMain_GameModeBase::SetCustomerCount(int32 const Customer)
+{
+	CustomerCount = Customer;
+	UpdateResourceCountsInGameMode(FishCount,TrashCount,CustomerCount,CurrencyCount);
+}
+
+void AMain_GameModeBase::SetCurrencyCount(int32 const Currency)
+{
+	CurrencyCount = Currency;
+	UpdateResourceCountsInGameMode(FishCount,TrashCount,CustomerCount,CurrencyCount);
+}
+
+//Update Resource Counts in HUD Widget via PlayerController reference
+void AMain_GameModeBase::UpdateResourceCountsInGameMode(int32 Fish, int32 Trash, int32 Customer, int32 Currency)
+{
+	PlayerController = Cast<ABasePlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+	HudWidget = PlayerController->HudWidget;
+	if (PlayerController)
+	{
+		if (HudWidget)
+		{
+			LogAsWarning ("AMain_GameModeBase::UpdateResourceCountsInGameMode: Updating Resource Counts in HUD Widget from GameMode");
+			HudWidget->UpdateResourceCountsInHUD(Fish,Trash,Customer,Currency);
+		}
+	}
+}
+
+void AMain_GameModeBase::ResetTrash()
+{
+	LogAsWarning ("AMain_GameModeBase::ResetTrash: Resetting Trash...");
+}
+
+//Pause the Game and Open Pause Menu
 void AMain_GameModeBase::PauseGame()
 {
 	if (PlayerController)
 	{
 		PlayerController->OpenPause(true, bIsSunIconShown);
 	}
-}
-
-void AMain_GameModeBase::ResumeGame()
-{
 }

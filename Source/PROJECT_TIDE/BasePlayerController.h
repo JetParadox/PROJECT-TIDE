@@ -5,6 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 
+#include"Character/PlayerCharacter.h"
+
+#include "HUD/DaySwitchUI.h"
 #include "HUD/HUDWidget.h"
 #include "HUD/PauseUserWidget.h"
 
@@ -30,19 +33,35 @@ protected:
 	UPROPERTY(EditAnywhere, Category="HUD")
 	TSubclassOf<UPauseUserWidget> PauseWidgetClass;
 
+	UPROPERTY(EditAnywhere, Category="HUD")
+	TSubclassOf<UDaySwitchUI> DayTransitionWidgetClass;
+
 public:
 	UPROPERTY(VisibleAnywhere, Category="HUD")
 	UHUDWidget* HudWidget;
 
 	UPROPERTY(VisibleAnywhere, Category="HUD")
 	UPauseUserWidget* PauseHudWidget;
+	
+	UPROPERTY(VisibleAnywhere, Category="HUD")
+	UDaySwitchUI* DayTransitionWidget;
 private:
+	//Character Settings
+	FVector StartingPlayerLocation;
+
+	//References
+	APlayerCharacter* PlayerCharacter = nullptr;
 
 	virtual void BeginPlay() override;
 	
 	virtual void SetupInputComponent() override;
 
 public:
+	void ShowDayTransitionUI(bool value);
+	void UpdateDayTransitionUI(int32 value);
+
+	void ResetPlayerTransforms();
+	
 	UFUNCTION(BlueprintCallable, Category="Pause")
 	void OpenPause(bool bPause, bool bIsSunIconShown);
 

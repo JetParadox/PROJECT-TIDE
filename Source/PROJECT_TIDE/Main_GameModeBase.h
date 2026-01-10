@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 
+
 #include "Environment/TimeActor.h"
 #include "HUD/HUDWidget.h"
 #include "HUD/PauseUserWidget.h"
@@ -37,13 +38,13 @@ private:
 	UPROPERTY(VisibleAnywhere, Category="Time Settings")
 	int32 CurrentTime = 0;
 
-	UPROPERTY(EditAnywhere, Category="Lights Settings")
+	UPROPERTY(EditAnywhere, Category="Icon Settings")
 	int32 IconTransitionHours = 0.0f;
 	
-	UPROPERTY(EditAnywhere, Category="Lights Settings")
+	UPROPERTY(EditAnywhere, Category="Icon Settings")
 	int32 IconTransitionMinutes = 0.0f;
 	
-	UPROPERTY(EditAnywhere, Category="Lights Settings")
+	UPROPERTY(EditAnywhere, Category="Icon Settings")
 	FString IconTransitionOnSuffix = "PM";
 
 
@@ -69,17 +70,32 @@ private:
 	UPROPERTY(VisibleAnywhere, Category="Lights Settings")
 	float CurrentChangeableLightIntensity = 0.0f;
 
+	//Changeable Lights Settings
+	UPROPERTY(EditAnywhere, Category="Transition Settings")
+	int32 MaxCountForTransitionTimer = 3;
+
+	//Time Transition Variables
 	int32 TimeToTurnOn;
 	int32 TimeToTransitionIcon;
-	
+	int32 ResetTimerValue = 0;
+
+	//Resource variables
+	int32 FishCount = 0;
+	int32 TrashCount = 0;
+	int32 CustomerCount = 0;
+	int32 CurrencyCount = 0;
+
+	//State Variables
 	bool bIsEndGameTriggered = false;
 	bool bIsSunIconShown = true;
+	bool isInBetweenDayTransition = false;
 
 	// References
 	ABasePlayerController* PlayerController = nullptr;
 	ATimeActor* TimeActor = nullptr;
 	UHUDWidget* HudWidget = nullptr;
 	UPauseUserWidget* PauseWidget = nullptr;
+	FTimerHandle ResetTimerHandle;
 	
 	TArray<ALight*> TaggedLights;
 
@@ -88,14 +104,28 @@ public:
 	// Functions
 	void UpdateTimeStringInGameMode(FString const TimeString, int32 Time, int32 OffsetTime);
 	void UpdateDayCountInGameMode(int32 const Day);
+	void EndDayTransition();
 	void IncreaseDayCount(ATimeActor *CurrentTimeActor);
 	void TurnLightsOn( int32 Time, int32 OffsetTime);
 	void CheckTransitionIcon( int32 Time, int32 OffsetTime);
 
-	void PauseGame();
-	
+	//Resource Setter Functions
 	UFUNCTION(BlueprintCallable)
-	void ResumeGame();
+	void SetFishCount(int32 const Fish);
+	UFUNCTION(BlueprintCallable)
+	void SetTrashCount(int32 const Trash);
+	UFUNCTION(BlueprintCallable)
+	void SetCustomerCount(int32 const Customer);
+	UFUNCTION(BlueprintCallable)
+	void SetCurrencyCount(int32 const Currency);
+	
+	void UpdateResourceCountsInGameMode(int32 Fish, int32 Trash, int32 Customer, int32 Currency);
+
+	//Trash Clearing Function
+	void ResetTrash();
+
+	//Pause Function
+	void PauseGame();
 
 	//Inline Functions
 	bool IsSunIconShown() { return bIsSunIconShown;};
