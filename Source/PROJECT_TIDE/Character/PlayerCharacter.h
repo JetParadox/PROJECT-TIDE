@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+#include "../Main_GameModeBase.h"
+
 #include "PlayerCharacter.generated.h"
 
 class USpringArmComponent;
@@ -21,6 +24,8 @@ class PROJECT_TIDE_API APlayerCharacter : public ACharacter
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess=true))
 	UCameraComponent* FollowCamera;
+
+	bool bIsPaused = false;
 
 public:
 	// Sets default values for this character's properties
@@ -44,7 +49,9 @@ private:
 	float MaxLookYAngle = 80.0f;
 	UPROPERTY(EditAnywhere, Category="Player Camera")
 	float MouseSensitivity = 1.0f;
-	
+
+	//References
+	AMain_GameModeBase *GameMode;
 protected:
 	
 	/** Move Input Action */
@@ -58,6 +65,10 @@ protected:
 	/** Jump Input Action */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* JumpAction;
+
+	/** Pause Input Action */
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* PauseAction;
 
 	//Inline Functions
 public:
@@ -75,6 +86,8 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+	/** Called for Pause input */
+	void Pause(const FInputActionValue& Value);
 
 	/** Handles move inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category="Input")

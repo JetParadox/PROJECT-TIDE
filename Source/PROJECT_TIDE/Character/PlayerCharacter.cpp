@@ -15,6 +15,7 @@
 
 #include "GameFramework/CharacterMovementComponent.h"
 
+#define LogAsWarning(x) UE_LOG(LogTemp, Warning, TEXT(x))
 #define LogOnScreen(x) GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT(x)));
 
 // Sets default values
@@ -62,7 +63,7 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	bIsPaused = false;
 }
 
 // Called every frame
@@ -86,6 +87,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
 		//Look Inputs
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
+		//Pause Inputs
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &APlayerCharacter::Pause);
 	}
 	else
 	{
@@ -105,11 +108,21 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 	FVector LookVector = Value.Get<FVector>();
 	float lookX = LookVector.X;
 	float lookY = LookVector.Y;
-	UE_LOG(LogTemp, Warning, TEXT("DoLookAction X: %f & Y: %f"), lookX, lookY);
 
 	DoTurn(lookX);
 	DoMouseLook(lookY);
 }
+
+void APlayerCharacter::Pause(const FInputActionValue& Value)
+{
+	LogAsWarning("APlayerCharacter::Pause: Pause Input Detected")
+	GameMode = Cast<AMain_GameModeBase>(GetWorld()->GetAuthGameMode());
+	if (GameMode)
+	{
+		GameMode->PauseGame();
+	}
+}
+
 
 void APlayerCharacter::DoMove(float Right, float Forward)
 {
